@@ -1,3 +1,11 @@
+const express = require('express');
+const app = express();
+
+// Importa el enrutador de list-view
+const listViewRouter = require('./list-view-router');
+//importar el enrutador de edit-router
+const listEditRouter = require('./list-edit-router');
+
 //sintaxis de readline
 
 const readline = require('readline');
@@ -5,6 +13,16 @@ const readline = require('readline');
 const rl = readline.createInterface({
   input: process.stdin,
   output: process.stdout
+});
+
+app.use((req, res, next) => {
+  const metodosValidos = ['GET', 'POST', 'PUT', 'DELETE']; 
+
+  if (!metodosValidos.includes(req.method)) {
+    return res.status(404).send('Método HTTP no permitido');
+  }
+
+  next(); // Continúa con la siguiente función middleware 
 });
 
 // Definir una lista para almacenar las tareas
